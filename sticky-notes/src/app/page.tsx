@@ -2,48 +2,10 @@
 
 import React, { useEffect, useState, useRef } from "react";
 
-/*
-  Aplicacion 9: Notas Adhesivas con Recordatorios (componente React de archivo unico en Next.js)
-  - Diseno: clases de Tailwind CSS (no es necesario importar en el componente)
-  - Persistencia: localStorage (simulacion de exportacion/importacion JSON basada en archivo)
-  - IDs: crypto.randomUUID() para identificadores seguros
-  - Recordatorios: API de Notificaciones del Navegador + indicador dentro de la aplicacion. Se revisa cada 30s mientras la app esta abierta.
+const CLAVE_STORAGE = "sticky_v1";
 
-  Limitaciones y decisiones tecnicas:
-  1. Las notificaciones del sistema solo se muestran si el navegador lo permite
-     y la pagina esta abierta o en segundo plano. No se implementa Service Worker / Push.
-  2. Las notas tienen una propiedad `notificada` para evitar multiples avisos.
-  3. La persistencia principal es localStorage bajo la clave `notas_adhesivas_v1`.
-  4. Se pueden importar/exportar notas en formato JSON simple: arreglo de objetos.
-  5. Se priorizo un codigo claro, mantenible y seguro (validaciones, try/catch en I/O).
 
-  Uso:
-  - Crear nota -> completar titulo, texto, color y vencimiento.
-  - Exportar -> descarga un archivo notas-export-YYYYMMDD-HHMMSS.json
-  - Importar -> selecciona un archivo JSON valido (se fusiona, IDs duplicadas se regeneran)
-  - Editar / Eliminar notas
-  - Las notas vencidas muestran una marca y disparan notificacion (si hay permiso)
-*/
-
-const CLAVE_STORAGE = "notas_adhesivas_v1";
-
-function ahoraIsoLocal() {
-  const d = new Date();
-  const pad = (n) => String(n).padStart(2, "0");
-  return (
-    d.getFullYear() +
-    "-" +
-    pad(d.getMonth() + 1) +
-    "-" +
-    pad(d.getDate()) +
-    "T" +
-    pad(d.getHours()) +
-    ":" +
-    pad(d.getMinutes())
-  );
-}
-
-export default function NotasAdhesivasApp() {
+export default function NotasAdhesivasApp() { // Crear variables de estado
   const [notas, setNotas] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [texto, setTexto] = useState("");
