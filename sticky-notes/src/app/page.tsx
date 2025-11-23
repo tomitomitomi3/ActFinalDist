@@ -90,6 +90,7 @@ export default function StickyNotesApp() {
           onSave={handleSave}
           editingNote={editingNote}
           onCancelEdit={() => setEditingNote(null)}
+          isDark={isDark}
         />
 
         <FilterBar 

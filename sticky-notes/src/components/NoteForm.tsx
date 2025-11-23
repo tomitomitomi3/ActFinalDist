@@ -14,9 +14,10 @@ interface NoteFormProps {
   onSave: (data: NoteFormData) => void;
   editingNote: Note | null;
   onCancelEdit: () => void;
+  isDark: boolean;
 }
 
-export const NoteForm: React.FC<NoteFormProps> = ({ isOpen, setIsOpen, onSave, editingNote, onCancelEdit }) => {
+export const NoteForm: React.FC<NoteFormProps> = ({ isOpen, setIsOpen, onSave, editingNote, onCancelEdit, isDark }) => {
   const [formData, setFormData] = useState<NoteFormData>({
     titulo: "",
     texto: "",
@@ -54,7 +55,12 @@ export const NoteForm: React.FC<NoteFormProps> = ({ isOpen, setIsOpen, onSave, e
       <div 
         onClick={() => setIsOpen(true)}
         // Agregamos text-slate-600 para que el texto de "Crear..." se vea bien en modo claro
-        className="w-full max-w-2xl cursor-text p-4 rounded-xl shadow-sm border flex items-center justify-between group transition-all duration-300 hover:shadow-md bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 mx-auto mb-10 text-slate-600 dark:text-slate-300"
+        className={`w-full max-w-2xl cursor-text p-4 rounded-xl shadow-sm border flex items-center justify-between group transition-all duration-300 hover:shadow-md mx-auto mb-10 
+          ${isDark
+            //bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700
+            ? "bg-slate-800 border-slate-700 text-slate-300"
+            : "bg-white border-slate=200 text-slate-600"
+          }`}
       >
         <span className="font-medium opacity-60 ml-2">Crear una nota nueva...</span>
         <button className="p-2 rounded-full bg-slate-100 dark:bg-slate-700 group-hover:bg-yellow-300 dark:group-hover:bg-yellow-500 transition-colors">
@@ -65,7 +71,15 @@ export const NoteForm: React.FC<NoteFormProps> = ({ isOpen, setIsOpen, onSave, e
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl rounded-xl shadow-xl border overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 mx-auto mb-10">
+    <form onSubmit={handleSubmit} 
+      className={`w-full max-w-2xl rounded-xl shadow-xl border overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300 mx-auto mb-10
+        ${isDark
+          //bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700
+          ? "bg-slate-800 border-slate-700"
+          : "bg-white border-slate-200"
+        }
+        }`}
+      >
       <div className="p-4 space-y-2">
         <input
           type="text"
@@ -73,7 +87,12 @@ export const NoteForm: React.FC<NoteFormProps> = ({ isOpen, setIsOpen, onSave, e
           value={formData.titulo}
           onChange={(e) => setFormData({...formData, titulo: e.target.value})}
           // FIX: Agregamos 'text-slate-900 dark:text-slate-100' explícitamente
-          className="w-full bg-transparent text-lg font-bold outline-none placeholder:opacity-50 text-slate-900 dark:text-slate-100"
+          className={`w-full bg-transparent text-lg font-bold outline-none placeholder:opacity-80
+            ${isDark
+              ? "placeholder:text-slate-100 text-slate-100"
+              : "placeholder:text-slate-500 text-slate-500"
+            }
+            `}
           autoFocus
         />
         <textarea
@@ -81,7 +100,12 @@ export const NoteForm: React.FC<NoteFormProps> = ({ isOpen, setIsOpen, onSave, e
           value={formData.texto}
           onChange={(e) => setFormData({...formData, texto: e.target.value})}
           // FIX: Agregamos 'text-slate-900 dark:text-slate-100' explícitamente
-          className="w-full bg-transparent outline-none resize-none min-h-[120px] placeholder:opacity-50 text-slate-900 dark:text-slate-100"
+        className={`w-full bg-transparent outline-none resize-none min-h-[120px]placeholder:opacity-80
+          ${isDark
+            ? "placeholder:text-slate-100 text-slate-100"
+            : "placeholder:text-slate-500 text-slate-500"
+          }
+        `}
         />
       </div>
 
